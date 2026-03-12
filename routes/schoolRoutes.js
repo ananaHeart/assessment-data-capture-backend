@@ -27,7 +27,8 @@ const {
   getCurriculumByGrade,
   deleteCurriculumEntry,
   updateCurriculumEntry,
-  getActiveAcademicYear
+  getActiveAcademicYear,
+  getDashboardSummary
 
 
 } = require('../controllers/schoolController');
@@ -39,6 +40,12 @@ router.get('/academic-years/:id', protect, restrictTo('principal', 'admin'), get
 router.put('/academic-years/:id', protect, restrictTo('principal', 'admin'), updateAcademicYear);
 router.delete('/academic-years/:id', protect, restrictTo('principal', 'admin'), deleteAcademicYear);
 router.get('/academic-years/active', protect, getActiveAcademicYear);
+router.get(
+  '/dashboard-summary',
+  protect,
+  restrictTo('principal', 'admin'),
+  getDashboardSummary
+);
 
 // --- Routes for Grade Levels ---
 router.post('/grade-levels', protect, restrictTo('principal', 'admin'), createGradeLevel);

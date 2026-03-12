@@ -489,7 +489,39 @@ const updateCurriculumEntry = async (req, res) => {
 
   
 };
+// @desc    Get School Dashboard Summary
+// @route   GET /api/school/dashboard-summary
+const getDashboardSummary = async (req, res) => {
+  try {
 
+    const [[teachers]] = await db.query(
+  "SELECT COUNT(*) AS totalTeachers FROM `user` WHERE role = 'teacher'"
+);
+
+const [[students]] = await db.query(
+  "SELECT COUNT(*) AS totalStudents FROM student WHERE status = 'enrolled'"
+);
+
+const [[classes]] = await db.query(
+  "SELECT COUNT(*) AS totalClasses FROM class"
+);
+
+const [[tests]] = await db.query(
+  "SELECT COUNT(*) AS totalAssessments FROM test"
+);
+
+    res.status(200).json({
+      totalTeachers: teachers.totalTeachers,
+      totalStudents: students.totalStudents,
+      totalClasses: classes.totalClasses,
+      totalAssessments: tests.totalAssessments
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error.' });
+  }
+};
 
 module.exports = {
   createAcademicYear,
@@ -517,5 +549,6 @@ module.exports = {
   getCurriculumByGrade,
   deleteCurriculumEntry,
   updateCurriculumEntry,
-  getActiveAcademicYear
+  getActiveAcademicYear,
+  getDashboardSummary   // ADD THIS
 };
